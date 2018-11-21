@@ -9,13 +9,7 @@ UPDATED FOR OMEGA-L
 
 # Installing / Migrating / Updating OmegaCMS
 
-In this section, you will find all informations about the installation of Omega-L
-
-Dans cette page, vous allez apprendre comment installer OmegaCMS de deux manières. Via l'installation automatique ou via l'installation manuelle.
-
-Vous allez aussi apprendre comment migrer OmegaCMS vers un nouveau serveur avec un nom de domaine différent.
-
-Et finalement comment mettre à jour manuellement OmegaCMS.
+In this section, you will find all informations about the installation, the migration and the update of Omega-L
 
 ## Installation
 ### Requirements
