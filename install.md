@@ -21,29 +21,29 @@ As Omega-L use Laravel 5.7, you must check out the requirement of [Laravel](http
 Check [Laravel](https://laravel.com/docs/5.7/installation) installations guide to configure the webserver.
 
 2. Clone the repository
-´´´
+```
 git clone git@github.com:rohsyl/omega-l.git
-´´´
+```
 
 3. Install php dependencies
-´´´
+```
 composer install
-´´´
+```
 
 4. Install css/js dependencies
-´´´
+```
 npm install
-´´´
+```
 
 5. Compile css/js assets
 	- For development
-	´´´
+	```
 	npm run dev
-	´´´
+	```
 	- For production
-	´´´
+	```
 	npm run prod
-	´´´
+	```
 
 6. Create a database
 
@@ -52,21 +52,21 @@ npm install
 	- Edit the ´.env´
 	- Database settings
 	Set database connection informations
-	´´´
+	```
 	DB_CONNECTION=mysql
 	DB_HOST=127.0.0.1
 	DB_PORT=3306
 	DB_DATABASE=omega-l
 	DB_USERNAME=user
 	DB_PASSWORD=password
-	´´´
+	```
 	> Laravel documentations about [database](https://laravel.com/docs/5.7/database)
 	- Save the file
 
 8. Generate Laravel App Key
-´´´
+```
 php artisan key:generate
-´´´
+```
 
 9. Install Omega-L with the webinstall
 
@@ -105,11 +105,11 @@ Omega-L is installed on DEV and we want to move it to PROD
 3. Upload all file from DEV to PROD
 	> If you have an SSH access with npm and composer, you can upload files without the npm_modules and vendor directories and then install them directly on the server. It will be faster.
 4. Compile assets for prod
-5. Edit the .env file
+5. Edit the `.env` file
 	- Check the database connection informations
-	- Set the APP_ENV to production
-	-	Set the APP_DEBUG to false
-	- Set the APP_URL to the PROD domain name
+	- Set the `APP_ENV` to production
+	-	Set the `APP_DEBUG` to false
+	- Set the `APP_URL` to the PROD domain name
 6. Omega-L is now available on PROD `http://rohs.ch/`
 
 
@@ -120,6 +120,6 @@ How to update Omega-L
 1. Update the files with git from doing a checkout from the last stable release
 
 2. Update the database
-´´´
+```
 php artisan migrate
-´´´
+```
