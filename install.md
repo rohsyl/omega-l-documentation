@@ -104,6 +104,8 @@ Omega-L is installed on DEV and we want to move it to PROD
 2. Restore the dump on PROD
 3. Upload all file from DEV to PROD
 	> If you have an SSH access with npm and composer, you can upload files without the npm_modules and vendor directories and then install them directly on the server. It will be faster.
+	
+	> Don't forget to upload `/public/media` that contains all your medias.
 4. Compile assets for prod
 5. Edit the `.env` file
 	- Check the database connection informations
