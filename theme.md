@@ -63,7 +63,7 @@ This file contains the `<head>` of your theme.
 
 ```
 <!DOCTYPE HTML>
-<html>
+<html lang="{{ Entity::LangSlug() }}">
 <head>
 
     <title>{{ Entity::Site()->name }} - {{ Entity::Page()->name }}</title>
