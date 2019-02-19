@@ -267,6 +267,26 @@ Create a `.blade.php` file in `/theme/my-theme/template/plugin_name`
 > Tips : It's easier to copy-paste the original view from the plugin directory.
   The view can be found in `/omega/plugin/plugin_name/view/display.blade.php`
   
+### Register the component template
+Create or edit the file `/theme/my-theme/template/register.php`.
+
+This file must contain the following code:
+```
+<?php
+use Omega\Utils\Theme\Template;
+
+/**
+ * @var Template
+ */
+return Template::For('templated-hielo')
+    ->registerComponentTemplateView('text', 'display', '1.0.0', 'text/textSuperStylish', 'Text on 3 column')
+    ;
+```
+
+The `registerComponentTemplateView` method will register the component template `text/textSuperStylish` for the view `display` of the plugin `text`. We also give the version of the plugin at the time we copied the original view. So with the version we can check if the component template need to be updated or not. We can also give a Label (optional).
+
+You can register many component template just by chaining the method.
+  
 ### How to use it on a component
 We can choose the component template with the option "Composant's template" in the settings of a component.
 
