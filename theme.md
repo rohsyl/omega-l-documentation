@@ -10,7 +10,9 @@ In this section, you will learn how to create a theme for Omega-L
 
 First, you have to choose a name for your theme (slugified).
 
-In this guide, we will name our theme "my-theme".
+In this guide, we will name our theme `my-theme`.
+
+> Don't forget to replace every occurence of `my-them` by the name of your theme.
 
 
 ## Theme hierarchy
@@ -20,6 +22,7 @@ In this guide, we will name our theme "my-theme".
             /css
             /js
         /template
+            /register.php
         /install
             /install.php
         /template
@@ -28,7 +31,7 @@ In this guide, we will name our theme "my-theme".
         /footer.blade.php
 ```
 
-> You will put all your assets (js and css) in the `assets` directory.
+> You will had to put all your assets (js and css) in the `assets` directory. (Mandatory)
 
 
 ### The `install.php` file
@@ -56,6 +59,11 @@ return Installer::For('my-theme')
     });
 
 ```
+> Replace `my-theme` with the name of your theme.
+
+Here you have to set the title, the description, the URL of your website and some colors.
+
+The `postInstall` method is called after the theme is installed. You can put any code you want in there. It's also used to create the ModuleArea (see the [Modulearea](#modulearea) section below)
 
 ### The `header.php` file
 
@@ -243,7 +251,7 @@ Modulearea are places where you can insert modules.
 
 Modulearea are created during the installation of the theme.
 
-Add the following line in the `/omega/theme/my-theme/install/install.php` inside the `postInstall()`:
+Add the following line in the `/omega/theme/my-theme/install/install.php` inside the `postInstall()` closure:
 ```
 ModuleArea::Create('modulearea_name', $name);
 ```
@@ -256,16 +264,19 @@ To define where a modulearea should be displayed, you will add the follwing line
 ```
 {!! ModuleArea::Display(Entity::Page(), 'footer', 'my-theme') !!}
 ```
+> Don't forget to replace `my-theme` by the name of your theme
 
 ## Component template
 
 Customizing the HTML of a component.
 
 ### Create
-Create a `.blade.php` file in `/theme/my-theme/template/plugin_name`
+Create a `.blade.php` file in `/omega/theme/my-theme/template`
 
 > Tips : It's easier to copy-paste the original view from the plugin directory.
   The view can be found in `/omega/plugin/plugin_name/view/display.blade.php`
+  
+It's a good idea to create a different directory for each plugin. So if you create a component template for the `text` plugin you will have to create a directory to hold all template for this plugin.
   
 ### Register the component template
 Create or edit the file `/theme/my-theme/template/register.php`.
@@ -285,7 +296,9 @@ return Template::For('templated-hielo')
 
 The `registerComponentTemplateView` method will register the component template `text/textSuperStylish` for the view `display` of the plugin `text`. We also give the version of the plugin at the time we copied the original view. So with the version we can check if the component template need to be updated or not. We can also give a Label (optional).
 
-You can register many component template just by chaining the method.
+> `text/textSuperStylish` is the relative path (from the `/theme/my-theme/template/` directory) to the view file (without the ext).
+
+You can register many component template just by chaining the `registerComponentTemplateView` method.
   
 ### How to use it on a component
 We can choose the component template with the option "Composant's template" in the settings of a component.
