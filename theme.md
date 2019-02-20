@@ -233,6 +233,19 @@ Templates must be placed under `/omega/theme/my-theme/template` and will have a 
 @include('theme::footer')
 ```
 
+## Assets
+
+All `.js`, `.css` and others files must be located in the assets directory of your theme.
+You can publish these assets to make theme available in the public directory by running the following command:
+
+`php artisan omega:theme:publish`
+
+> This will publish files once.
+
+If you want to watch the changes and automatically publish you can use the following command:
+
+`npm run watch-theme`
+
 ## CSS Theme
 
 > CSS Theme allow you to custom the CSS on pages.
