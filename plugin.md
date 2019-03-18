@@ -18,6 +18,7 @@ Enable the multi-lang in your plugin ? See [Muti-lang Plugin](./multilang_plugin
 1. [Form](#form)
 1. [Database](#database)
 1. [Multi-langue](#multi-langue)
+1. [Migrations](#migrations)
 
 # Create a plugin
 Create a plugin with `omega-cli` tools.
@@ -154,17 +155,13 @@ class BControllerTwitterfeed extends BController {
     }
 
     public function install() {
-        if (!$this->isInstalled()) {
-            parent::install();
-            parent::runSql($this->root. '/sql/install.sql');
-        }
+        parent::runSql($this->root. '/sql/install.sql');
+        return true;
     }
 
     public function uninstall() {
-        if ($this->isInstalled()) {
-            parent::uninstall();
-            parent::runSql($this->root. '/sql/uninstall.sql');
-        }
+        parent::runSql($this->root. '/sql/uninstall.sql');
+        return true;
     }
 
     public function index()
@@ -307,10 +304,8 @@ Check inside the `BController`, the `install` method must look like this :
 
 ```
 public function install() {
-    if (!$this->isInstalled()) {
-        parent::install();
-        parent::runSql($this->root. '/sql/install.sql');
-    }
+    parent::runSql($this->root. '/sql/install.sql');
+    return true;
 }
 ```
 
@@ -407,6 +402,40 @@ Now that we have passed the `$data` to the view, we just need to use them in the
 
 There is a full exemple available [here](./assets/plugindemo.zip)
 
+# Migrations
+
+
+1. Create a migration file
+
+Create a migration file for the given plugin under `omega/plugin/[plugin_name]/database/migrations`
+
+```
+php artisan omega:plugin:make:migration [plugin_name] [migration_name]
+```
+
+2. Execute migration
+
+Execute migration for the given plugin
+
+```
+php artisan omega:plugin:migrate [plugin_name]
+```
+
+3. Rollback migration
+
+Rollback the last migrations for the given plugin
+
+```
+php artisan omega:plugin:migrate:rollback [plugin_name]
+```
+
+4. Reset migration
+
+Rollback all migrations for the given plugin
+
+```
+php artisan omega:plugin:reset [plugin_name]
+```
 
 # Old documentation
 
