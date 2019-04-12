@@ -67,7 +67,7 @@ How to create the basics files for a new plugin.
     
     - Provide more informations about the plugin by editing the `plugin.json` and filling all information.
     
-# How Plugins Work
+# How plugins works
 
 ## 1. `plugin.json`
 
@@ -142,7 +142,7 @@ Usefull methods :
 
 Method | Parameters | Description
 --- | --- | ---
-`runSql` | `$sqlFileAbsPath` | Execute a SQL file given in parameter. Path must be given in absolute. You can use the property `$this->root` that contain the path to the root directory of the plugin.
+`runSql` | `$sqlFileAbsPath` | **@deprecated** Execute a SQL file given in parameter. Path must be given in absolute. You can use the property `$this->root` that contain the path to the root directory of the plugin. 
 `isInstalled` | &nbsp; | Return true if the plugin is installed
 `getId` | &nbsp; | Return the if of the plugin in the database
 `getMeta` | &nbsp; | Return the meta information about the plugin (`PluginMeta`) (it's the content of the `plugin.json` file)
