@@ -321,25 +321,6 @@ public function display( $args, $data ) {
 
 > Note : If your plugin does not have component/module, then `$data` will be `null`.
 
-### Tips
-
-You could use the method `Util::printR()` to display the content of the `$data` variable. In this way, you can see 
-how entry's values are set.
-
-Exemple : 
-```
-public function display( $args, $data ) {
-    Util::printR($data);
-    return $this->view( $data );
-}
-```
-
-> You can also do it on each variables to know what does it contain.
-
-Now that we have passed the `$data` to the view, we just need to use them in the view by directly calling variable by `$[entry_name]`.
-
-> Replace `[entry_name]` by the name of the entry you set in the migration file
-
 # Migrations
 
 
