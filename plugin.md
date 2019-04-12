@@ -9,30 +9,27 @@ Enable the multi-lang in your plugin ? See [Muti-lang Plugin](./multilang_plugin
 
 # Table of content
 1. [Create a plugin](#create-a-plugin)
-2. [How it works](#how-omega-plugin-works)
+2. [How it works](#how-plugins-works)
     1. [plugin.json](#1-plugin-json)
     1. [BController.php - Back-end controller](#2-bcontroller-php-back-end-controller)
     1. [FController.php - Front-end controller](#3-fcontroller-php-front-end-controller)
     1. [View](#4-view)
 1. [Components & Modules](#components-modules)
-1. [Form](#form)
-1. [Database](#database)
-1. [Multi-langue](#multi-langue)
 1. [Migrations](#migrations)
 
 # Create a plugin
 
 How to create the basics files for a new plugin.
 
-`php artisan omega:plugin:generate`
+`php artisan omega:plugin:create`
 
-> `omega:plugin:generate` is an artisan command to create a plugin.
+> `omega:plugin:create` is an artisan command to create a plugin.
 
 1. Open a terminal
 
 2. Go to the root of your project
 
-3. Run the command `php artisan omega:plugin:generate`
+3. Run the command `php artisan omega:plugin:create`
 
     - The tool will ask you for a plugin name.
     ```
