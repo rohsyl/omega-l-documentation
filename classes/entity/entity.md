@@ -1,23 +1,25 @@
-[Retour](../../classes.md)
+[Back](../../classes.md)
 
-# La classe `Entity`
-Cette classe permet de récuprer l'instance actuelle de certaine entité.
-> Remarque: Cette classe est utile **uniquement** dans le front-end.
+# The `Entity` facade
+
+This class is usefull in the font-end part of the CMS.
+
+It allow you to get instance of the following classes.
 
 ## Site
-Une instance de la classe  [Omega](./omega.md)
+An instance of the class  [Omega](./omega.md). To get informations about the site.
 ```
 $site = Entity::Site();
 ```
 
 ## Page
-Une instance de la classe  [Page](./page.md)
+An instance of the class  [Page](./page.md). To get content of the page.
 ```
 $page = Entity::Page();
 ```
 
 ## Menu
-Une instance de la classe  [Menu](./menu.md)
+An instance of the class  [Menu](./menu.md). To configure and render the menu.
 ```
 $menu = Entity::Menu();
 ```
