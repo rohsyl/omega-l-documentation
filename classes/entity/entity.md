@@ -7,7 +7,7 @@ This class is usefull in the font-end part of the CMS.
 It allow you to get instance of the following classes.
 
 ## Site
-An instance of the class  [Omega](./omega.md). To get informations about the site.
+An instance of the class  [Site](./site.md). To get informations about the site.
 ```
 $site = Entity::Site();
 ```
