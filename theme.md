@@ -12,8 +12,11 @@ First, you have to choose a name for your theme (slugified).
 
 In this guide, we will name our theme `my-theme`.
 
-> Don't forget to replace every occurence of `my-them` by the name of your theme.
+> Don't forget to replace every occurence of `my-theme` by the name of your theme.
 
+## Theme directory
+
+First, you need to create a directory called `my-theme` in the `/omega/theme` directory.
 
 ## Theme hierarchy
 ```
