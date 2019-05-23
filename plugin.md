@@ -359,7 +359,7 @@ php artisan omega:plugin:reset [plugin_name]
 
 # Usefull tips
 
-# Override Page attributes
+## Override Page attributes
 
 It's possible to override the value of any attribute of the current page.
 
