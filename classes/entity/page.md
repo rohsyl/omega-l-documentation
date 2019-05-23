@@ -44,6 +44,7 @@ Méthode | Description
 `reload()` | Recharche la page
 `isVisibleTitle()` | Si le titre de la page doit être affiché
 `isVisibleSubTitle()` | Si le sous-titre de la page doit être affiché
+`set($attributeName, $value)` | Override the value of the given attribute (`$attributeName`).
 
 ## Méthode statique de la classe `Page`
 
