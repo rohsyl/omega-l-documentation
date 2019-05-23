@@ -16,6 +16,7 @@ Enable the multi-lang in your plugin ? See [Muti-lang Plugin](./multilang_plugin
     1. [View](#4-view)
 1. [Components & Modules](#components-modules)
 1. [Migrations](#migrations)
+1. [Usefull tips](#usefull-tips)
 
 # Create a plugin
 
@@ -355,3 +356,17 @@ Rollback all migrations for the given plugin
 ```
 php artisan omega:plugin:reset [plugin_name]
 ```
+
+# Usefull tips
+
+# Override Page attributes
+
+It's possible to override the value of any attribute of the current page.
+
+It can be used when you want to change the `<title>` of the page.
+
+Exemple: 
+```
+\Omega\Facades\Entity::Page()->set('name', 'News - ' . $post->title);
+```
+> Add this line somewhere in the `display` method of the `FController`.
