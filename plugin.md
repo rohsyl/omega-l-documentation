@@ -236,7 +236,7 @@ public function index()
 }
 ```
 
-# Components & Modules
+# Components and Modules
 
 > How to create components and modules.
 
@@ -266,6 +266,15 @@ Then, in the `BController` of your plugin, check that the `migrate()` method is 
 ```
 public function install() {
     $this->migrate();
+    return true;
+}
+```
+
+and the `reset()` methid is also called in the `uninstall()` method.
+
+```
+public function uninstall() {
+    $this->reset();
     return true;
 }
 ```
@@ -304,6 +313,69 @@ Name | Description | Value
 `$title` | The title | `string`
 `$description` | The description | `string`
 `$mandatory` | Will be a mandatory field | `boolean` : 0 or 1
+
+
+### Render the form in the back-end
+
+In the back-end, the form is dynamically generated and each entry take a full line on the page. Sometimes the default rendering is enough. But for more complicated Form, it could be good to improve the form with a customized rendering.
+
+To achive that, you have to create a new class that extends from `Omega\Utils\Plugin\Form\Renderer\AFormRenderer` and override the `render()` method.
+
+You can place it anywhere in your Plugin directory. But it's recommended to create a `FormRenderer` directory and put your class in it.
+
+```
+<?php
+namespace OmegaPlugin\Teaser\FormRenderer;
+
+use Omega\Utils\Plugin\Form\Renderer\AFormRenderer;
+
+class TeaserFormRenderer extends AFormRenderer
+{
+    public function render()
+    {
+        return plugin_view('teaser', 'formrenderer.component')->with([
+            'entries' => $this->getEntries()
+        ]);
+    }
+}
+```
+
+The `getEntries()` method returns you an array in which keys are the name of the entry.
+
+If you have create an entry named `title` you can display it in your view by doing :
+
+```
+{!! $entries['title']->getHtml() !!}
+```
+
+Here is an exemple of view :
+
+```
+<div class="row">
+    <div class="col-sm-8">
+        {!! $entries['title']->getHtml() !!}
+        {!! $entries['text']->getHtml() !!}
+    </div>
+
+    <div class="col-sm-4">
+        {!! $entries['image']->getHtml() !!}
+        {!! $entries['link']->getHtml() !!}
+    </div>
+</div>
+```
+
+And finally, you need to register your custom form renderer by calling  `setComponentFormRenderer`
+ and/or `setModuleFormRenderer` in the constructor of your BController of the plugin.
+ 
+ ```
+public function __construct() {
+    parent::__construct('teaser');
+    $this->setModuleFormRenderer(new TeaserFormRenderer());
+    $this->setComponentFormRenderer(new TeaserFormRenderer());
+}
+```
+
+And now components and/or modules form will be rendered with your custom class.
 
 ## 3. Display
 
