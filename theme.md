@@ -27,6 +27,7 @@ Then you will have to create the following files and directories.
         /assets
             /css
             /js
+            /img
         /template
             /register.php
         /install
@@ -71,7 +72,7 @@ Here you have to set the title, the description, the URL of your website and som
 
 The **`colors`** option is an array of color used in your theme and that you want to allow the user to reuse them. Mainly in the settings of a component as the background color option.
 
-The `postInstall` method is called after the theme is installed. You can put any code you want in there. It's also used to create the ModuleArea (see the [Modulearea](#modulearea) section below)
+The `postInstall` method is called after the theme is installed. You can put any code you want in there. It's also used to create the ModuleArea (see the [Modulearea](#modulearea) section below). The `postInstall()` method is optional.
 
 ### The `header.php` file
 
@@ -160,7 +161,7 @@ This file contains the content of your page. It also include the footer file.
 <!-- Footer -->
 @include('theme::footer')
 ```
-> cf. [Menu](./classes/entity/menu.md)
+> cf. [Menu](./classes/entity/menu.md) to learn more about menu (setMenuHtmlStruct, ...)
 
 ### The `footer.php` file
 ```
@@ -325,7 +326,3 @@ You can register many component's templates just by chaining the `registerCompon
   
 ### How to use it on a component
 We can choose the component template with the option "Composant's template" in the settings of a component while editing a page.
-
-## Theme exemple
-You can download a theme exemple here.
-[Download](./assets/omegaV3_default_theme.zip)
