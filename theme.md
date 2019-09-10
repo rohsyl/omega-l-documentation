@@ -326,3 +326,16 @@ You can register many component's templates just by chaining the `registerCompon
   
 ### How to use it on a component
 We can choose the component template with the option "Composant's template" in the settings of a component while editing a page.
+
+
+### Default component's template
+
+You can define a component template that will be used by default for a theme by creating a new blade file in the in a sub-directory of the `omega/theme/my-theme/template/` directory.
+
+The sub-directory must have the **same** name as the plugin and the file must be named `default.blade.php`.
+
+Exemple:
+```
+omega/theme/my-theme/template/plugin_name/default.blade.php
+```
+
