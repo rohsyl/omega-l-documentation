@@ -9,101 +9,66 @@ Enable the multi-lang in your plugin ? See [Muti-lang Plugin](./multilang_plugin
 
 # Table of content
 1. [Create a plugin](#create-a-plugin)
-2. [How it works](#how-omega-plugin-works)
+2. [How it works](#how-plugins-works)
     1. [plugin.json](#1-plugin-json)
     1. [BController.php - Back-end controller](#2-bcontroller-php-back-end-controller)
     1. [FController.php - Front-end controller](#3-fcontroller-php-front-end-controller)
     1. [View](#4-view)
 1. [Components & Modules](#components-modules)
-1. [Form](#form)
-1. [Database](#database)
-1. [Multi-langue](#multi-langue)
+1. [Migrations](#migrations)
+1. [Usefull tips](#usefull-tips)
 
 # Create a plugin
-Create a plugin with `omega-cli` tools.
 
-> `omega-cli` is a tools writed in C# and need `mono` to run on linux.
+How to create the basics files for a new plugin.
+
+`php artisan omega:plugin:create`
+
+> `omega:plugin:create` is an artisan command to create a plugin.
 
 1. Open a terminal
 
-2. Go to the `tools/omega-cli` directory.
-    
-3. Configure `omega-cli` [(see this guide)](omega-cli/configure.md)
+2. Go to the root of your project
 
-4. Run the command `omega-cli plugin:create [pluginName]`
+3. Run the command `php artisan omega:plugin:create`
 
-    - The tool will normalize your pluginName to avoid error and will ask for confirmation.
+    - The tool will ask you for a plugin name.
     ```
-    Output directory will be : D:\git\omegav3\plugin
-    The plugin_name you entered will be normalized : twitterFeed
-    The name of your plugin will be : twitterfeed
-    Are you okay with this name ? (y/n)
+    Please provide a plugin name:
     ```
-    
-    > Here you can see the the destination were the generated plugin will be placed (Output directory ).
 
-    - Type `y` and hit [Enter]
+    - Write the name of the plugin
     
-    - Then it will ask you information about the plugin, like the display name, the author, ...
+    - Then it will ask you confirmations for the creation
     ```
-    Please give all informations about the plugin :
-    Plugin title [] :
-    Twitter Feed
-    Plugin version [0.0.1] :
-    
-    Author name [Sylvain Roh] :
-    
-    Author mail [syzin12@gmail.com] :
-    
-    Author website [http://rohs.ch] :
-    
-    Plugin description [] :
-    Display a feed of tweets in a modulearea
-    Option - Display in menu (0, 1) [0] :
-    1
+    Plugin name must follow some rules and be formatted. After formatting, your plugin name will be :
+    .....
+
+    Do you want to keep this plugin name ? (yes/no) [no]:
     ```
-    > If you keep empty, the default value will be used. The default value is shown between `[]`
     
-    - When it's done, a confirmation will be asked. Just answer with `y`
-    ```
-    Are you okay with these informations ? (y/n)
-    y
-    ```
+    - Just answer with `yes` of you really want to create it.
     
     - Finally, the plugin will be generated.
     ```
-    Plugin creation started ...
-    Create plugin directories under "D:\git\omegav3\plugin" ...
-    Created : D:\git\omegav3\plugin\twitterfeed
-    Created : D:\git\omegav3\plugin\twitterfeed\sql
-    Created : D:\git\omegav3\plugin\twitterfeed\view
-    Created : D:\git\omegav3\plugin\twitterfeed\image
-    Created : D:\git\omegav3\plugin\twitterfeed\css
-    Created : D:\git\omegav3\plugin\twitterfeed\js
-    Ok
-    
-    Create json file ...
-    Created : D:\git\omegav3\plugin\twitterfeed\plugin.json
-    Ok
-    
-    Create plugin files...
-    Created : D:\git\omegav3\plugin\twitterfeed\FControllerTwitterfeed.php
-    Created : D:\git\omegav3\plugin\twitterfeed\BControllerTwitterfeed.php
-    Created : D:\git\omegav3\plugin\twitterfeed\sql\install.sql
-    Created : D:\git\omegav3\plugin\twitterfeed\sql\uninstall.sql
-    Created : D:\git\omegav3\plugin\twitterfeed\view\view-display.sql
-    Created : D:\git\omegav3\plugin\twitterfeed\view\view-index.sql
-    Ok
-    
-    Plugin created successfully !
-    Plugin location : D:\git\omegav3\plugin
-    
-    Success!
+    Directory created : /media/data/git/omega-l/omega/plugin/quote_request
+    Directory created : /media/data/git/omega-l/omega/plugin/quote_request/view
+    Directory created : /media/data/git/omega-l/omega/plugin/quote_request/assets
+    Directory created : /media/data/git/omega-l/omega/plugin/quote_request/assets/css
+    Directory created : /media/data/git/omega-l/omega/plugin/quote_request/assets/images
+    File generated : /media/data/git/omega-l/omega/plugin/quote_request/BControllerQuoteRequest.php
+    File generated : /media/data/git/omega-l/omega/plugin/quote_request/FControllerQuoteRequest.php
+    File generated : /media/data/git/omega-l/omega/plugin/quote_request/view/display.blade.php
+    File generated : /media/data/git/om-skycinema/omega/plugin/quote_request/assets/css/styles.css
+    File copied : assets/images/component-logo.png
+    File generated : /media/data/git/omega-l/omega/plugin/quote_request/plugin.json
     ```
     
     - You've created successfully a plugin !
     
-# How Omega plugin works
+    - Provide more informations about the plugin by editing the `plugin.json` and filling all information.
+    
+# How plugins works
 
 ## 1. `plugin.json`
 
@@ -138,38 +103,29 @@ This is the controller used in the back-end
 
 ```
 <?php
-/*
- *  Generated with omega-cli.
- *  Date : lundi, 23 juillet 2018
- */
+namespace OmegaPlugin\TwitterFeed;
 
-namespace Omega\Plugin\Twitterfeed;
+use Omega\Utils\Plugin\BController;
 
-use Omega\Library\Plugin\BController;
-
-class BControllerTwitterfeed extends BController {
+class BControllerTwitterFeed extends BController {
 
     public function __construct() {
-        parent::__construct('twitterfeed');
+        parent::__construct('twitter_feed');
     }
 
     public function install() {
-        if (!$this->isInstalled()) {
-            parent::install();
-            parent::runSql($this->root. '/sql/install.sql');
-        }
+        $this->migrate();
+        return true;
     }
 
     public function uninstall() {
-        if ($this->isInstalled()) {
-            parent::uninstall();
-            parent::runSql($this->root. '/sql/uninstall.sql');
-        }
+        $this->reset();
+        return true;
     }
 
     public function index()
     {
-        return $this->view();
+        return $this->meta_view();
     }
 }
 ```
@@ -187,15 +143,16 @@ Usefull methods :
 
 Method | Parameters | Description
 --- | --- | ---
-`runSql` | `$sqlFileAbsPath` | Execute a SQL file given in parameter. Path must be given in absolute. You can use the property `$this->root` that contain the path to the root directory of the plugin.
-`getAdminLink` | `$action`, `[$param]` | Return the URL to the given action. Exemple `$this->getAdminLink('index')` will return the URL to the index action. You can pass `GET` parameters by giving key/value array as second argument.
+`runSql` | `$sqlFileAbsPath` | **@deprecated** Execute a SQL file given in parameter. Path must be given in absolute. You can use the property `$this->root` that contain the path to the root directory of the plugin. 
 `isInstalled` | &nbsp; | Return true if the plugin is installed
 `getId` | &nbsp; | Return the if of the plugin in the database
 `getMeta` | &nbsp; | Return the meta information about the plugin (`PluginMeta`) (it's the content of the `plugin.json` file)
-`partialView` | `$name`, `$m = array()` | Return a partial view by his name and optionnaly pass parameters
+`redirect` | `$action`, `$param = []` | Redirect to the given action (a method of this controller) with the $param as $_GET
 `json` | `$array` | Return `$array` as JSON
-`view` | `$m = array()` | Return the view of the current action
-    
+`view` | `$name` | Return the view of the current action
+`meta_view` |  | Return a view that display informations about the plugin    
+`migrate` |  | Run all migrations files
+`reset` |  | Rollback all migrations files
     
     
     
@@ -212,25 +169,21 @@ This is the controller used in the front-end.
     
 ```
 <?php
-/*
-*  Generated with omega-cli.
-*  Date : lundi, 23 juillet 2018
-*/
+namespace OmegaPlugin\TwitterFeed;
 
-namespace Omega\Plugin\Twitterfeed;
+use Omega\Utils\Plugin\FController;
 
-use Omega\Library\Plugin\FController;
-
-class FControllerTwitterfeed extends  FController {
+class FControllerTwitterFeed extends  FController {
 
 
    public function __construct() {
-       parent::__construct('twitterfeed');
+       parent::__construct('twitter_feed');
    }
 
    public function registerDependencies() {
        return array(
            'css' => array(
+                $this->asset('css/styles.css')
            ),
            'js' => array(
            )
@@ -238,7 +191,7 @@ class FControllerTwitterfeed extends  FController {
    }
 
    public function display( $args, $data ) {
-       return $this->view();
+        return $this->view('display')->with(['data' => $data]);
    }
 }
 ```
@@ -256,10 +209,9 @@ Usefull methods :
 
 Method | Parameters | Description
 --- | --- | ---
-`partialView` | `$name`, `$m = array()` | Return a partial view by his name and optionnaly pass parameters
 `json` | `$array` | Return `$array` as JSON
-`view` | `$m = array()` | Return the view of the current action
-
+`view` | `$name` | Return the view of the current action
+`asset` | `$path` | Return the URL to the given asset
 
 ## 4. View
 
@@ -267,24 +219,24 @@ Method | Parameters | Description
 
 Views are placed in the `view` directory in the root of the plugin.
 
-Files are always prefixed with `view-`.
+Views use Blade template engine.
+
+Views filename end with `.blade.php`.
 
 #### Exemple 
 
-> with the **index** method in the **back-end** controller.
+You can create a view called `index.blade.php` in the `/view` directory.
 
-If you have the method called `index` then the view file will be called `view-index.php`.
+And in the **index** method in the **back-end** controller you can display the index view by doing this:
 
 ```
 public function index()
 {
-    return $this->view();
+    return $this->view('index');
 }
 ```
 
-> The method must return `$this->view();`.
-
-# Components & Modules
+# Components and Modules
 
 > How to create components and modules.
 
@@ -292,69 +244,138 @@ public function index()
 
 Components and modules are basically the same thing. The only difference is where they are used :
  - Components are used to build the content of a page.
- - Modules are used to be placed in ModuleArea.
+ - Modules are used in ModuleArea.
  
-They're stored in the same table in the database : `om_module`. And they're all directly linked to a plugin.
-To create a component/module, you need to create a plugin. One component/module per plugin. Can be compoent and module at the same time.
+They're stored in the same table in the database : `modules`. And they're all directly linked to a plugin.
+To create a component/module, you need to create a plugin. One component/module per plugin. Can be component and module at the same time.
 
 ## 2. Creation
 
-The creation is done in SQL at the installation of the plugin.
+The creation is done in a migration file at the installation of the plugin.
 
-If you have used the `omega-cli` to create your plugin, you normally have a `sql/install.sql` file that is executed when installing the plugin.
+> During dev you can manually migrate and rollback migration files.
 
-Check inside the `BController`, the `install` method must look like this :
+You can create a migration file by calling the following command:
+
+```
+php artisan omega:plugin:make:migration plugin_name create_form
+```
+
+Then, in the `BController` of your plugin, check that the `migrate()` method is called in the `install()` method.
 
 ```
 public function install() {
-    if (!$this->isInstalled()) {
-        parent::install();
-        parent::runSql($this->root. '/sql/install.sql');
-    }
+    $this->migrate();
+    return true;
 }
 ```
 
-The line `parent::runSql($this->root. '/sql/install.sql');` will execute the sql file.
+and the `reset()` methid is also called in the `uninstall()` method.
 
-
-> If the `sql/install.sql` file and the `install` method doesn't exists, please create them.
-
-All the following SQL query must be placed in this file.
+```
+public function uninstall() {
+    $this->reset();
+    return true;
+}
+```
 
 ### Create the `form`
 
 ```
-CALL `om_CreateForm`('[comp_name]', '[plugin_name]', [is_module], [is_componant], [title]);
+FormFactory::newForm('form_name', 'plugin_name', false, true, 'Quotation request form');
 ```
 
 Parameters :
 
 Name | Description | Value
 --- | --- | ---
-`comp_name` | The name of the component/module | `string` : The same value as the plugin name
-`plugin_name` | The name of the plugin | `string` : The name of your plugin
-`is_module` | Will be a module | `boolean` : 0 or 1
-`is_componant` |Will be a componant | `boolean` : 0 or 1
-`title` | The title of the component/module | `string`
+`$formName` | The name of the component/module | `string` : The same value as the plugin name
+`$pluginName` | The name of the plugin | `string` : The name of your plugin
+`$isModule` | Will be a module | `boolean` : 0 or 1
+`$isComponent` | Will be a component | `boolean` : 0 or 1
+`$title` | The title of the component/module | `string`
 
 
 ### Create the `entry` (one or many)
 ```
-CALL `om_CreateFormEntry`('[comp_name]', '[entry_name]', [entry_order], [entry_type], [entry_type_param], [entry_title], [entry_descr], [is_mendatory]);
+FormFactory::newFormEntry('form_name', 'entry_name', 1, \Omega\Utils\Plugin\Type\Alert::class, $infoParam, '', '', false);
 ```
 
 Parameters :
 
 Name | Description | Value
 --- | --- | ---
-`comp_name` | The name of the component/module | `string` : The same value than the one in the `om_CreateForm` 
-`entry_name` | The name of the `entry` | `string`
-`entry_order` | The order | `integer`
-`entry_type` | The class of the type of the entry | `string` : All available types are listed in the back-end under Developper > Datatypes. If you need to create your own datatyoe. Check out the  [Data Types](datatypes.md) page
-`entry_type_param` | The datatype's parameter | `json ` : **Warning**, it must be valid JSON and in one line. (You can use this tool [jsonformatter](https://jsonformatter.curiousconcept.com/) to validate and format the JSON.
-`entry_title` | The title | `string`
-`entry_descr` | The description | `string`
-`is_mendatory` | Sera un champs obligatoire | `boolean` : 0 or 1
+`$formName` | The name of the component/module | `string` : The same value than the one in the `om_CreateForm` 
+`$entryName` | The name of the `entry` | `string`
+`$order` | The order | `integer`
+`$type` | The class of the type of the entry | `class` : All available types are listed in the back-end under Developper > Datatypes. If you need to create your own datatyoe. Check out the  [Data Types](datatypes.md) page
+`$param` | The datatype's parameter | `array` : Param of the type as an array
+`$title` | The title | `string`
+`$description` | The description | `string`
+`$mandatory` | Will be a mandatory field | `boolean` : 0 or 1
+
+
+### Render the form in the back-end
+
+In the back-end, the form is dynamically generated and each entry take a full line on the page. Sometimes the default rendering is enough. But for more complicated Form, it could be good to improve the form with a customized rendering.
+
+To achive that, you have to create a new class that extends from `Omega\Utils\Plugin\Form\Renderer\AFormRenderer` and override the `render()` method.
+
+You can place it anywhere in your Plugin directory. But it's recommended to create a `FormRenderer` directory and put your class in it.
+
+```
+<?php
+namespace OmegaPlugin\Teaser\FormRenderer;
+
+use Omega\Utils\Plugin\Form\Renderer\AFormRenderer;
+
+class TeaserFormRenderer extends AFormRenderer
+{
+    public function render()
+    {
+        return plugin_view('teaser', 'formrenderer.component')->with([
+            'entries' => $this->getEntries()
+        ]);
+    }
+}
+```
+
+The `getEntries()` method returns you an array in which keys are the name of the entry.
+
+If you have create an entry named `title` you can display it in your view by doing :
+
+```
+{!! $entries['title']->getHtml() !!}
+```
+
+Here is an exemple of view :
+
+```
+<div class="row">
+    <div class="col-sm-8">
+        {!! $entries['title']->getHtml() !!}
+        {!! $entries['text']->getHtml() !!}
+    </div>
+
+    <div class="col-sm-4">
+        {!! $entries['image']->getHtml() !!}
+        {!! $entries['link']->getHtml() !!}
+    </div>
+</div>
+```
+
+And finally, you need to register your custom form renderer by calling  `setComponentFormRenderer`
+ and/or `setModuleFormRenderer` in the constructor of your BController of the plugin.
+ 
+ ```
+public function __construct() {
+    parent::__construct('teaser');
+    $this->setModuleFormRenderer(new TeaserFormRenderer());
+    $this->setComponentFormRenderer(new TeaserFormRenderer());
+}
+```
+
+And now components and/or modules form will be rendered with your custom class.
 
 ## 3. Display
 
@@ -373,41 +394,51 @@ public function display( $args, $data ) {
 
 > Note : If your plugin does not have component/module, then `$data` will be `null`.
 
-### Tips
+# Migrations
 
-You could use the method `Util::printR()` to display the content of the `$data` variable. In this way, you can see 
-how entry's values are set.
 
-Exemple : 
+1. Create a migration file
+
+Create a migration file for the given plugin under `omega/plugin/[plugin_name]/database/migrations`
+
 ```
-public function display( $args, $data ) {
-    Util::printR($data);
-    return $this->view( $data );
-}
+php artisan omega:plugin:make:migration [plugin_name] [migration_name]
 ```
 
-> You can also do it on each variables to know what does it contain.
+2. Execute migration
 
-Now that we have passed the `$data` to the view, we just need to use them in the view by directly calling variable by `$[entry_name]`.
+Execute migration for the given plugin
 
-> Replace `[entry_name]` by the name of the entry you set in the `install.sql`
+```
+php artisan omega:plugin:migrate [plugin_name]
+```
 
-# Form
+3. Rollback migration
 
-> How to create a full form in the a back-end page.
+Rollback the last migrations for the given plugin
 
-# Database
+```
+php artisan omega:plugin:migrate:rollback [plugin_name]
+```
 
-> How to save data in the database.
+4. Reset migration
 
-# Multi-langue
+Rollback all migrations for the given plugin
 
-> How to use multi-langue in your plugin.
+```
+php artisan omega:plugin:reset [plugin_name]
+```
 
+# Usefull tips
 
-There is a full exemple available [here](./assets/plugindemo.zip)
+## Override Page attributes
 
+It's possible to override the value of any attribute of the current page.
 
-# Old documentation
+It can be used when you want to change the `<title>` of the page.
 
-[Plugin guide old](./plugin.old.md)
+Exemple: 
+```
+\Omega\Facades\Entity::Page()->set('name', 'News - ' . $post->title);
+```
+> Add this line somewhere in the `display` method of the `FController`.

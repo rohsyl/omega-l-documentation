@@ -1,15 +1,26 @@
 [Retour](./plugin.md)
 
-# Création d'un datatype
+# Datatypes
 
-Dans le dossier `library/plugin/type`, créez un nouveau fichier `class.TypeName.php` avec le contenu suivant:
+**Datatypes** are used to create form for components and modules.
+
+## Create a datatype
+
+Create a new class that extend the abstract class `Omega\Utils\Plugin\ATypeEntry`.
 ```
 <?php
-namespace Omega\Library\Plugin\Type;
+/**
+ * Created by PhpStorm.
+ * User: sylvain
+ * Date: 05.08.2017
+ * Time: 19:12
+ */
 
-use Omega\Library\Plugin\ATypeEntry;
+namespace Omega\Utils\Plugin\Type;
 
-class TypeName extends ATypeEntry {
+use Omega\Utils\Plugin\ATypeEntry;
+
+class TextSimple extends ATypeEntry {
 
     public function getHtml()
     {
@@ -33,72 +44,61 @@ class TypeName extends ATypeEntry {
     }
 }
 ```
-> Votre classe `TypeName` doit hériter de la classe `Omega\Library\Plugin\ATypeEntry`
 
-# La classe `Omega\Library\Plugin\ATypeEntry`
-C'est la classe a utiliser lorsque l'on veut créer un Type.
+# The class `Omega\Utils\Plugin\ATypeEntry`
+This class is important to create new TypeEntry.
 
-Elle offre les outils necessaires à la création d'un Type.
+It will give you all usefull methods to create and new Type.
 
-Il y a 4 méthodes abstraites à surcharger pour créer un nouveau Type correctement.
-- `getHtml()` : Qui retourne le code HTML du champs de formulaire dans un `string`. 
-    C'est cette méthode qui sera utilisée pour afficher le champs de formulaire
-- `getPostedValue()` : Qui retourne ce qui va être enregirstré dans la base de données. Le retour **doit** être un `string`. Si vous voulez enregistrer un `array` dans la base de données, il faut le transformer en json avant avec la fonction `json_encode($array)`.
-- `getObjectValue()` : Cette méthode doit retourner ce que vous avez enregistré grâce à `getPostedValue()`. 
-    Mais si vous aviez enregistré un `array`, pensez donc à le passer dans la fonction `json_decode($json, true)`. Vous pouvez sans autre retourner des objets si vous le voulez.
-- `getDoc()` : Qui retourne un explication au format HTML des paramètres qui doivent être passé à votre Type.
+First, there is 4 abstract method to override.
+- `getHtml()` : Must return the html of the form entry as a `string`. 
+- `getPostedValue()` : Must return the value that will be stored in the database. The return type **MUST** be a `string`. If you need to store an array, just `json_encode()` it.
+- `getObjectValue()` : Must return the value you saved in the database with `getPostedValue()`. But of you have saved an array encoded in json. Don't forget to decode it ! You can also return object if you what.
+- `getDoc()` : Must return the explaination of the entry type parameters. This view will be displayed in the Developper > Datatyles section.
 
-Vous avez aussi plusieurs méthodes disponibles pour créer votre Type:
-- `getUniqId()` : Qui vous retourne un identifiant unique. A utiliser dans l'attribut `name` de votre `<input />`
-- `getParam()` : Qui retourne les paramètres de votre Type dans un `array` ou `null` si il n'y as pas de paramètres. *La gestion de paramètres sera exploqué plus loin dans le document*
-- `getValue()` : Qui retourne la valeur enregistrée dans la base de données
-- `getIdPage()` : Qui retourne l'id de la page dans laquelle se trouve le Type
-- `existsPost($key)` : Qui retourne `true` ou `false` si la `$key` se trouve dans la variable `$_POST`
-- `getPost($key)` : Qui retourne la valeur qui se trouve dans la variable `$_POST[$key]` 
-- `view($viewName, $viewData)` : Qui retourne la vue se trouvant dans `library/plugin/type/view/TypeName/view-[$viewName].php` en lui passant les paramètres se trouvant dans `$viewData`
+There is many usefull method that you will have to use to create your type.
+- `getUniqId()` : Wil return an uniq identifier. You will have to use it, for exemple, in the `name` attribute of an `<input />`.
+- `getParam()` : Will return parameters of your type as an `array`, or `null` if there is no parameters. Parameters will be explained later in this document.
+- `getValue()` : Will return the value stored in the database (raw)
+- `getIdPage()` : Will return the id of the current page (can be null)
+- `existsPost($key)` : Will return `true` or `false` if the `$key` is present in the POST
+- `getPost($key)` : Will return the value `$key` from the POST variable
+- `view($viewName, $viewData, $viewParentPath = null)` : Will return the view located in the `$viewParentPath` directory and named **`$viewName`**`.blade.php` and will pass parameters passed in the `$viewData` directory
 
-> Il ne faut pas hésiter à aller voir les types déjà existant pour s'inspirer. Ils se trouvent tous dans le dossier `library/plugin/type`.
+> Do not hesitate to take a look at existing Types. They are located in `app/Utils/Plugin/Type`.
 
-# Les paramètres de votre Type
-- Où les paramètres sont-ils définis ?
+# Parameter of your Tyoe
+- Where do I define parameters of my entry 
     
-    C'est le développeur qui va définir les valeurs de ces paramètres lorsque qu'il va créer un composant/module en utilisant la procédure stockeé SQL `om_CreateFormEntry` en s'inspirant de ce que vous aurez écrit dans votre `getDoc()`.
+    It's the developper that will set the parameters that will be passed to the type. You will have to explain which parameters you expect in the `getDoc()`. Parameters will be passed when the user create form entry.
     
-    Ils sont définis qu'une seule fois et jamais changés.
+    Parameters are set when the user create form entry and they can't be changed.
     
-- Comment sont stockés les paramètres ?
+- How parameters are stored.
 
-    Les paramètres sont stockés au format JSON dans la base de données, vous travaillerez donc avec un `array`
+    They are stored in the database as JSON. Yon will have to work with an array.
     
-    La méthode `getParam()` lit dans la base de données, décode le JSON et retourne un `array`. `null` est retourné si le JSON n'est pas valide.
+    The `getParam()` method will read the value in the database, then will `json_decode` it and return the `array` or `null` of there is no parameters or if the json is not valid.
 
-- Exemple de paramètres :
+- Parameters exemple : 
     ```
-    {
-        "default" : 1,
-        "options" : {
-            "0" : "Left",
-            "1" : "Right",
-            "2" : "Top",
-            "3" :"Bottom"
-        }
-    }
+    [
+        "default" =>  1,
+        "options" => [
+            "0" => "Left",
+            "1" => "Right",
+            "2" => "Top",
+            "3" => "Bottom"
+        ]
+    ]
     ```
-- Exemple de paramètres avec un namespace dans le json
+- Exemple with an classname.
     ```
-    {
-        "model" : "Omega\\Library\\Test\\ClassTest"
-    }
-    ```
-    
-    > Si l'on met un \ dans du JSON il faut en mettre un deuxième car le \ est un caractère d'echappement. Et comme on insère les paramètres via SQL, il faut mettre quatre !!!!
-    
-    ```
-    {
-        "model" : "Omega\\\\Library\\\\Test\\\\ClassTest"
-    }
+    [
+        "model" => "Omega\\Library\\Test\\ClassTest"
+    ]
     ```
 
-- Comment faire pour définir des paramètres par défaut ?
+- How to define default parameters ?
 
-    Comme dans le Type `MediaChooser` dans `library/plugin/type/class.MediaChooser.php`
+    Look how the `MediaChooser` type did it. The file is located in `app/Utils/Plugin/Type/MediaChooser.php`
