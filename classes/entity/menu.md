@@ -26,6 +26,10 @@ Method | Description
 Here is some examples of methods described above.
 
 ## Exemple of `setMenuHtmlStruct()`
+
+The `setMenuHtmlStruct()` method allow you to set the html structure of your memu. Usually menu item are `<li class="menu-item">` tag placed in a `<ul id="menu">` and sub-menu item are `<li>` in a `<ul>` both inside `.menu-item`.
+
+Here is an exemple of a menu structure :
 ```
 Entity::Menu()->setMenuHtmlStruct([
     'ul_main' => ' <ul class="links">%1$s</ul>',
@@ -36,6 +40,33 @@ Entity::Menu()->setMenuHtmlStruct([
     'li_childrenactiv' => '<li class="nav-item-%3$s"><a href="%1$s" %5$s>%2$s</a>%4$s</li>'
     ]);
 ```
+
+- `ul_main` : The menu
+    - `%1$s` : Is a placeholder that will be replaced by all menu items (`li_nochildren`, `li_nochildrenactiv`, `li_children`, `li_childrenactiv`)
+- `li_nochildren` : Menu item (used for sub-menu item too)
+    - `%1$s` : The URL
+    - `%2$s` : The title of the page
+    - `%3$s` : The slug (the title in lowercase, with no special char and no space)
+    - `%4$s` : The `target="_blank"`attribute if the page needs to be opened in a new tab
+- `li_nochildrenactiv` : Active menu item  (used for active sub-menu item too)
+    - `%1$s` : The URL
+    - `%2$s` : The title of the page
+    - `%3$s` : The slug (the title in lowercase, with no special char and no space)
+    - `%4$s` : The `target="_blank"`attribute if the page needs to be opened in a new tab
+- `li_children` : Menu item with a sub-menu
+    - `%1$s` : The URL
+    - `%2$s` : The title of the page
+    - `%3$s` : The slug (the title in lowercase, with no special char and no space)
+    - `%4$s` : The submenu (`ul_children`)
+    - `%5$s` : The `target="_blank"`attribute if the page needs to be opened in a new tab
+- `ul_children` : Sub-menu
+    - `%1$s` : Is a placeholder that will be replaced by all sub menu items (`li_nochildren`, `li_nochildrenactiv`)
+- `li_childrenactiv` : Active menu item with a sub-menu
+    - `%1$s` : The URL
+    - `%2$s` : The title of the page
+    - `%3$s` : The slug (the title in lowercase, with no special char and no space)
+    - `%4$s` : The submenu (`ul_children`)
+    - `%5$s` : The `target="_blank"`attribute if the page needs to be opened in a new tab
 
 The HTML structure above will generate a menu similar to this :
 ```
