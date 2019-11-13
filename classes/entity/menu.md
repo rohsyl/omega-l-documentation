@@ -29,6 +29,8 @@ Here is some examples of methods described above.
 
 The `setMenuHtmlStruct()` method allow you to set the html structure of your memu. Usually menu item are `<li class="menu-item">` tag placed in a `<ul id="menu">` and sub-menu item are `<li>` in a `<ul>` both inside `.menu-item`.
 
+![menu strcture](../../assets/images/menu-structure.jpg)
+
 Here is an exemple of a menu structure :
 ```
 Entity::Menu()->setMenuHtmlStruct([
